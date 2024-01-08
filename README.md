@@ -142,6 +142,82 @@ SSL/TLS은 bin 폴더의 elasticsearch-certutil.bat을 통해 생성할 수 있�
 여기까지 되었다면, 우선 ES에서 할 설정도 끝이다.
 
 ## 3. Kibana
+- https://www.elastic.co/kr/downloads/kibana
+
+위 링크에서 OS에 맞는 Kibana를 다운로드 한다.
+
+동일하게 bin 폴더에 가서 kibana.bat을 실행해준다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/1f9f1e02-350d-4623-b932-5034c4d07d82)
+
+반가운 메시지인 ```Kibana is now available```이 뜬다면 5601 포트를 통해 접속하여 아래 페이지에 접근할 수 있다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/4894f6f4-fb5c-4fc2-ac49-c5d04e17ec20)
+
+
+만약~ 실행이 제대로 되지 않을 경우에 ES와 동일하게 config 폴더로 들어가 ```kibana.yml``` 파일을 실행시켜준다.
+
+주석처리 되어있는 기본 값들을 풀어 해결할 수도 있다. (나는 이렇게 해서 됨..)
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/afab2d16-a832-416e-9098-59f254002672)
+
+이제 마지막으로 ```Logstash``` 를 통해 스프링 프로젝트에서 발생한 로그와 파이프라인을 만들어준다.
+
+## 4. Logstash
+
+- https://www.elastic.co/kr/downloads/logstash
+만들기 앞서 위 링크에서 OS에 맞는 Logstash를 다운로드 한다.
+
+config 폴더를 들어가 logstash-sample.conf 를 적절하게 구성해준다. 
+
+(https://www.elastic.co/guide/en/logstash/current/config-examples.html 참고)
+
+```
+--logstash-sample.conf
+input {
+	file {
+		path => "C:/works/test/API.log"
+		type => api
+	}}
+filter {
+	dissect {
+		mapping => {
+			"message" => "%{timestamp} | %{message}"
+		}
+	}
+	date {
+		match => ["timestamp", "ISO8601", "YYYY-MM-dd HH:mm:ss,SSS"]
+	}
+	json {
+		source => "message"
+	}
+}
+output {
+	if [type] == "api" {
+		elasticsearch {
+			codec => json
+			hosts => ["http://localhost:9200","http://127.0.0.1:9200"]
+			index => "api"
+		}
+	}
+}
+```
+
+이제 터미널을 통해 Logstash 경로에 접근하여 아래 명령어를 통해 가동해준다.
+
+```
+.\logstash.bat -f ./config/logstash-sample.conf
+```
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/f2626f76-a376-4d49-be88-29274f2f7e43)
+
+위 쉘과 같이 Pipelines running 되면,
+
+9600 포트를 통해 접속하여 ES와 같이 json 값을 리턴 받으면 이상없이 실행된 것이다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/8e764329-15fa-4d10-8251-2c1e677aca47)
+
+이제 모든 설정은 끝이 났고, 키바나를 통해 대시보드를 구성하기만 하면 된다.
 
 
 # Ref
