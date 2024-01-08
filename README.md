@@ -90,5 +90,59 @@ public class HelloController {
 
 ## 2. ElasticSearch 설치 및 설정
 
+- https://www.elastic.co/kr/downloads/elasticsearch
+
+위 경로에서 OS에 맞는 ES를 다운로드 한다.
+
+압축 파일을 푼 후 해당 폴더의 bin에 들어가 ```elasticsearch.bat``` 을 실행해준다.
+
+최초 실행 시, ES 암호와 토큰을 발급해주는데 이를 별도로 저장해준다.
+
+하지만 이 튜토리얼에서는 별도의 SSL/TLS 등의 설정없이 가볍게 각 스택 별 연동을 통해 시각화된 메트릭을 보는 것이 목적이니 보안 설정은 과감히 패스한다.
+
+위 파일을 실행 시 아래 이미지와 같이 로그가 찍힐 것이다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/557fb4aa-2b59-4196-933a-04c0c49f106f)
+
+9200 포트로 접근 시 아래와 같은 json 값을 반환 받았다면 이상 없이 정상 실행된 것이다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/8a39f09f-c139-41a9-9f81-8ddb078ebc12)
+
+만약 제대로 실행이 되지 않는다면, config 폴더로 들어가 elasticsearch.yml 에서 xpack 관련 보안을 false로 전환해주면 된다. (로컬 테스트용이기 때문에 보안 끄는 것.)
+
+```
+-- elasticsearch.yml
+# Enable security features
+xpack.security.enabled: false
+
+xpack.security.enrollment.enabled: false
+
+# Enable encryption for HTTP API client connections, such as Kibana, Logstash, and Agents
+xpack.security.http.ssl:
+  enabled: false
+  keystore.path: certs/http.p12
+
+# Enable encryption and mutual authentication between cluster nodes
+xpack.security.transport.ssl:
+  enabled: false
+  verification_mode: certificate
+  keystore.path: certs/transport.p12
+  truststore.path: certs/transport.p12
+# Create a new cluster with the current node only
+# Additional nodes can still join the cluster later
+cluster.initial_master_nodes: ["DESKTOP-NVRBMAI"]
+
+# Allow HTTP API connections from anywhere
+# Connections are encrypted and require user authentication
+http.host: 0.0.0.0
+```
+
+SSL/TLS은 bin 폴더의 elasticsearch-certutil.bat을 통해 생성할 수 있다.
+
+여기까지 되었다면, 우선 ES에서 할 설정도 끝이다.
+
+## 3. Kibana
+
+
 # Ref
 - https://medium.com/cloud-native-daily/elk-spring-boot-a-guide-to-local-configuration-b6d9fa7790f6
