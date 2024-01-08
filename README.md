@@ -219,6 +219,48 @@ output {
 
 이제 모든 설정은 끝이 났고, 키바나를 통해 대시보드를 구성하기만 하면 된다.
 
+## 5. 키바나 대시보드 설정
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/a10c0eae-90d3-4c03-afc7-5ea0c88ef3bb)
+
+좌측 상단의 삼지창을 누른 후에, 아래로 내리다 보면 Management가 보인다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/6f49cc59-cc45-4c5f-a8f3-74f1000471c5)
+
+Management에 들어가면 Ingest, Data, Alerts and Insights, Kibana 등의 탭이 보이는데, 이 중 Data의 Index Management 메뉴에 들어가 로그에 대한 인덱스를 설정해준다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/bf1a9d23-008f-4b99-b389-e11bcd22f49a)
+
+위 Logstash에서 설정한 type인 api를 인덱스로 아래 이미지와 같이 생성해준다.
+
+Docs count 컬럼에 몇 개의 로그가 적재되어있는지 확인할 수 있다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/2a5174be-0357-4070-aca8-c9556b99d275)
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/d83ba120-ca84-43e4-a5b1-16e9c447ee4a)
+
+인덱스 등록 후 키바나 또한 세팅해준다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/c67aba1f-9e1c-466a-86d7-3007f6530b20)
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/bbec62e1-2316-4e22-962e-47254405e16c)
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/af9d27da-3d2f-471f-bcfb-b597710a31ea)
+
+이후 삼지창에서 Analytics - Dashboard를 들어가서
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/740992e2-d75d-4acf-88d6-7326d08d4295)
+
+인덱스로 지정한 api를 레이어에 추가하고 필드를 추가해주면 끝난다.
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/9918f973-6db2-43d7-9285-c39cd84e5523)
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/9f3f16dd-d330-460c-aaa5-0607833ae2bb)
+
+발생한 로그 카운트 수
+
+![image](https://github.com/jekyllPark/elk-tutorial/assets/114489012/ee0dc1f8-0e3e-4af1-9b13-daccd6918bc1)
+
 
 # Ref
 - https://medium.com/cloud-native-daily/elk-spring-boot-a-guide-to-local-configuration-b6d9fa7790f6
